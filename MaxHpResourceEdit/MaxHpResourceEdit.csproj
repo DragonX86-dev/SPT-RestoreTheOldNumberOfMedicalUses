@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Version>1.0.0</Version>
+        <Configuration>Release</Configuration>
+        <AssemblyName>MaxHpResourceEdit</AssemblyName>
+    </PropertyGroup>
+
+    <Target Name="RemoveDirectories" BeforeTargets="BeforeBuild">
+        <RemoveDir Directories="./bin/;./build/;./dist/" />
+    </Target>
+
+    <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+        <Copy SourceFiles="bin\$(Configuration)\net9.0\$(AssemblyName).dll"
+              DestinationFolder="./build/SPT/user/mods/$(AssemblyName)/" />
+        <Copy SourceFiles="bin\$(Configuration)\net9.0\config.json"
+              DestinationFolder="./build/SPT/user/mods/$(AssemblyName)/" />
+    </Target>
+
+    <Target Name="ZipOutputPath" AfterTargets="Build">
+        <MakeDir Directories="./dist" Condition="!Exists('./dist')" />
+        <Delete Files="./dist/$(AssemblyName)-$(Version).zip"
+                Condition="Exists('./dist/$(AssemblyName)-$(Version).zip')" />
+        <ZipDirectory SourceDirectory="./build"
+                      DestinationFile="./dist/$(AssemblyName)-$(Version).zip" />
+    </Target>
+
+    <ItemGroup>
+        <PackageReference Include="SPTarkov.Common" Version="4.0.6"/>
+        <PackageReference Include="SPTarkov.DI" Version="4.0.6"/>
+        <PackageReference Include="SPTarkov.Server.Core" Version="4.0.6"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="config.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+</Project>
