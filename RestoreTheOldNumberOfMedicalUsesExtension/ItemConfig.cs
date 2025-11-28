@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using SPTarkov.Server.Core.Models.Common;
 
-namespace MaxHpResourceEdit;
+namespace RestoreTheOldNumberOfMedicalUsesExtension;
 
 public record ItemConfig
 {
